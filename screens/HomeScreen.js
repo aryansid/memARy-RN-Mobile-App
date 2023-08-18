@@ -1,11 +1,14 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {KeyboardAvoidingView, StyleSheet, Text, View} from "react-native";
 
 const HomeScreen = () => {
   return (
-    <View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+    >
       <Text>Home Screen</Text>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
