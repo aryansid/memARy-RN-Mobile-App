@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, Platform } from 'react-native';
+import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, Platform, TouchableOpacity } from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
-// import firestore from '@react-native-firebase/firestore';
+// import firestore from '@react-native-firebase/firestore';    
 // import storage from '@react-native-firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { collection, addDoc, getDocs, query } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "../firebase";
+import { db, storage, auth } from "../firebase";
 import { encode as btoa, decode as atob } from 'base-64';
 
 function HomeScreen() {
@@ -74,7 +74,7 @@ function HomeScreen() {
         }
       };
       
-      const handleUploadFromGallery = async () => {
+    const handleUploadFromGallery = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
           alert('Sorry, we need camera roll permissions to make this work!');
@@ -94,23 +94,33 @@ function HomeScreen() {
         }
       };      
       
-      const handleUploadToFirebase = async () => {
+    const handleUploadToFirebase = async () => {
         if (selectedImage && description) {
           setLoading(true);
           try {
-            // Extract filename and generate upload URI
-            const filename = selectedImage.uri.substring(selectedImage.uri.lastIndexOf('/') + 1);
-            const uploadUri = selectedImage.uri;
+            // Generate a unique filename based on timestamp
+            const filename = `${Date.now()}.jpg`;
+            
+            // Fetch the image from the URI and create a blob
+            const blob = await new Promise((resolve, reject) => {
+              const xhr = new XMLHttpRequest();
+              xhr.onload = function () {
+                resolve(xhr.response);
+              };
+              xhr.onerror = function () {
+                reject(new TypeError('Network request failed'));
+              };
+              xhr.responseType = 'blob';
+              xhr.open('GET', selectedImage.uri, true);
+              xhr.send(null);
+            });
       
-            // Read the file into a Uint8Array
-            const fileInfo = await FileSystem.getInfoAsync(uploadUri);
-            const fileUri = fileInfo.uri;
-            const fileData = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.Base64 });
-            const fileBuffer = Uint8Array.from(atob(fileData), c => c.charCodeAt(0));
+            // Create a storage reference and upload the blob
+            const imageRef = ref(storage, `images/${filename}`);
+            const uploadTaskSnapshot = await uploadBytes(imageRef, blob);
       
-            // Create a storage reference and upload the Uint8Array
-            const imageRef = ref(storage, filename);
-            const uploadTaskSnapshot = await uploadBytes(imageRef, fileBuffer);
+            // Close the blob and free up resources
+            blob.close();
       
             // Get the download URL and update Firestore
             const url = await getDownloadURL(imageRef);
@@ -123,6 +133,7 @@ function HomeScreen() {
             setSelectedImage(null);
             setDescription('');
             setLoading(false);
+            Alert.alert("Success", "Image has been successfully uploaded!", [{ text: "OK" }]);
           } catch (err) {
             console.error(err);
             setError("Failed to upload data. Please try again.");
@@ -131,8 +142,16 @@ function HomeScreen() {
         }
       };
       
-      
 
+    const handleSignOut = () => {
+        auth.signOut().then(() => {
+            console.log("User signed out");
+        }).catch((error) => {
+            console.error("Sign out error", error);
+        });
+    };
+    
+       
     if (loading) {
         return (
             <View style={styles.centered}>
@@ -146,17 +165,35 @@ function HomeScreen() {
     }
 
     return (
-        <View style={styles.container}>
-            <Button title="Take Picture" onPress={handleTakePicture} />
-            <Button title="Upload from Gallery" onPress={handleUploadFromGallery} />
+        <View style={styles.background}>
+            <Text style={styles.logo}>Capture your face</Text>
+            <Text style={styles.header}>Capture, Upload, Remember.</Text>
+
             {selectedImage && <Image source={selectedImage} style={styles.previewImage} />}
+
             <TextInput
-                placeholder="Enter a description..."
+                placeholder="Enter your relationship with the patient ..."
                 value={description}
                 onChangeText={setDescription}
-                style={styles.input}
+                style={styles.textInput}
             />
-            <Button title="Upload to Firebase" onPress={handleUploadToFirebase} />
+
+
+            <View style={styles.actionButtons}>
+                <TouchableOpacity style={styles.customButton} onPress={handleTakePicture}>
+                <Text style={styles.buttonText}>Take Picture</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.customButton} onPress={handleUploadFromGallery}>
+                <Text style={styles.buttonText}>Upload from Gallery</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.customButton} onPress={handleUploadToFirebase}>
+                <Text style={styles.buttonText}>Upload Photo</Text>
+                </TouchableOpacity>
+            </View>
             <FlatList
                 data={images}
                 renderItem={({ item }) => (
@@ -168,41 +205,71 @@ function HomeScreen() {
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
             />
+            <View style={styles.signOutContainer}>
+                <Button title="Sign Out" onPress={handleSignOut} />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
+    background: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: '#f6f6f6',
     },
-    centered: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+    logo: {
+      fontSize: 36,
+      fontWeight: 'bold',
+      color: '#6200ee',
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    header: {
+      fontSize: 16,
+      color: '#000',
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    textInput: {
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 4,
+      padding: 16,
+      marginBottom: 16,
+    },
+    buttonContainer: {
+      marginBottom: 12,
+      alignItems: 'center',
+    },
+    customButton: {
+      borderRadius: 25,
+      backgroundColor: '#6200ee',
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      width: 200,
+      alignItems: 'center',
+      marginBottom: 16, // #30D5C8
+    },
+    buttonText: {
+      color: 'white',
+      fontWeight: 'bold',
+      fontSize: 16,
     },
     previewImage: {
-        width: 200,
-        height: 200,
-        marginBottom: 10,
+      width: 200,
+      height: 200,
+      alignSelf: 'center',
+      marginBottom: 24,
     },
-    input: {
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
-        padding: 10,
+    actionButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      marginBottom: 16,
     },
-    gridItem: {
-        flex: 1,
-        margin: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    image: {
-        width: 150,
-        height: 150,
-    },
-});
+    signOutContainer: {
+        backgroundColor: '#30D5C8'
+    }
+  });
 
 export default HomeScreen;

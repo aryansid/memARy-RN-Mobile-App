@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import React, {useEffect, useState} from "react";
-import {KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Image, View} from "react-native";
+import {KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Button} from "react-native";
 import {auth} from "../firebase"
 import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 
@@ -44,110 +44,120 @@ const LoginScreen = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior="padding"
-    >
-      <Image
-        source={require('../assets/logo.png')} 
-        style={styles.logo}
+    <View style={styles.background}>
+      <Text style={styles.logo}>memARy</Text>
+      <Text style={styles.header}>Preserving Moments, One Click at a Time.</Text>
+
+      <TextInput
+        style={styles.textInput}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
-      <View
-        style = {styles.inputContainer}
-      >
-        <TextInput
-          placeholder = "Email"
-          value = {email}
-          onChangeText = {text => setEmail(text)}
-          style = {styles.input}
-        />
-        <TextInput
-          placeholder = "Password"
-          value = {password}
-          onChangeText = {text => setPassword(text)}
-          style = {styles.input}
-          secureTextEntry
-        />
+
+      <TextInput
+        style={styles.textInput}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+
+      <View style={styles.forgotPassword}>
+        <TouchableOpacity>
+          <Text style={styles.label}>Forgot your password?</Text>
+        </TouchableOpacity>
       </View>
 
-      <View
-        style = {styles.buttonContainer}
-      >
-        <TouchableOpacity
-          onPress = {handleLogin}
-          style = {styles.button}
-        >
-          <Text
-            style = {styles.buttonText}
-          >
-            Login
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress = {handleSignUp}
-          style = {[styles.button, styles.buttonOutline]}
-        >
-          <Text
-            style = {styles.buttonOutlineText}
-          >
-            Register
-          </Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.signInButton} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
-  )
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.row}>
+        <Text style={styles.label}>Don’t have an account? </Text>
+        <TouchableOpacity>
+          <Text style={styles.link}>Sign up</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 export default LoginScreen
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
+    padding: 16,
+    backgroundColor: '#f6f6f6',
     justifyContent: 'center',
-    alignItems: 'center',
   },
-  inputContainer: {
-    width: '80%'
+  logo: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#6200ee',
+    textAlign: 'center',
+    marginBottom: 24,
   },
-  input: {
-    backgroundColor: 'white',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 5,
+  header: {
+    fontSize: 16,
+    color: '#000',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 16,
+    marginBottom: 16,
+  },
+  forgotPassword: {
+    alignItems: 'flex-end',
+    marginBottom: 24,
+  },
+  row: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  label: {
+    color: '#000',
+  },
+  link: {
+    fontWeight: 'bold',
+    color: '#6200ee',
   },
   buttonContainer: {
-    width: '60%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 40,
-  },
-  button: {
-    backgroundColor: '#0782F9',
-    width: '100%',
-    padding: 15,
-    borderRadius: 10,
+    paddingHorizontal: 16, 
+    marginBottom: 12, 
+  }, 
+  signInButton: {
+    borderRadius: 25,
+    backgroundColor: '#6200ee',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     alignItems: 'center',
   },
-  buttonOutline: {
-    backgroundColor: 'white',
-    marginTop: 5,
-    borderColor: '#0782F9',
-    borderWidth: 2,
+  signUpButton: {
+    borderRadius: 25,
+    backgroundColor: '#30D5C8', // Turquoise color
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    alignItems: 'center',
   },
   buttonText: {
     color: 'white',
-    fontWeight: '700',
+    fontWeight: 'bold',
     fontSize: 16,
   },
-  buttonOutlineText: {
-    color: '#0782F9',
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  logo: {
-    width: 150, 
-    height: 150, 
-    marginBottom: 20
-  }
-})
+});
