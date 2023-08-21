@@ -2,11 +2,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen'
-import HomeScreen from './screens/HomeScreen';
+import PictureUploadScreen from './screens/PictureUploadScreen';
 import {auth} from "./firebase"
 import {useEffect, useState} from 'react';
 import { User } from 'firebase/auth';
 import React from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createNativeStackNavigator(); 
 
@@ -36,6 +38,8 @@ export default function App() {
     return unsubscribe;
   }, []);
 
+  const Tab = createMaterialTopTabNavigator();
+
   if (isAuthenticating) {
     return (
       // You can replace this with a loading component or spinner if you like
@@ -55,6 +59,8 @@ export default function App() {
         )}
       </Stack.Navigator>
     </NavigationContainer>
+
+
   );
 }
 

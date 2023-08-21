@@ -1,9 +1,9 @@
 .background {
   flex: 1;
-  padding: 16;
+  padding: 16px;
   background-color: '#f6f6f6';
 }
-/*note from Joy: I really want to use Sass here */
+
 .centered {
   flex: 1;
 } 
@@ -17,58 +17,58 @@
 }
 
 .logo {
-  font-size: 36;
-  font-weight: 'bold';
+  font-size: 36px;
+  // font-weight: 'bold';
   color: '#6200ee';
   text-align: 'center';
-  margin-bottom: 16;
+  margin-bottom: 16px;
 }
 
 header {
-  font-size: 16;
+  font-size: 16px;
   color: '#000';
   text-align: 'center';
-  margin-bottom: 16;
+  margin-bottom: 16px;
 }
 .textInput {
-  border-width: 1;
-  border-color: '#ccc';
-  border-radius: 4;
-  padding: 16;
-  margin-bottom: 16;
+  border-width: 1px;
+  // border-color: '#ccc';
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
 .buttonContainer {
-  margin-bottom: 12;
+  margin-bottom: 12px;
   align-items: 'center';
 }
 
 .customButton {
-  border-radius: 25;
+  border-radius: 25px;
   background-color: '#6200ee';
-  padding: 10;
-  width: 200;
+  padding: 10px;
+  width: 200px;
   align-items: 'center';
-  margin-bottom: 16; // #30D5C8
+  margin-bottom: 16px; // #30D5C8
 }
 
 .buttonText {
   color: 'white';
-  font-weight: 'bold';
-  font-size: 16;
+  // font-weight: 'bold';
+  font-size: 16px;
 }
 
 .previewImage {
-  width: 200;
-  height: 200;
+  width: 200px;
+  height: 200px;
   align-self: 'center';
-  margin-bottom: 24;
+  margin-bottom: 24px;
 }
 
 .actionButtons {
   flex-direction: 'row';
   justify-content: 'space-around';
-  margin-bottom: 16;
+  margin-bottom: 16px;
 }
 
 .signOutContainer {

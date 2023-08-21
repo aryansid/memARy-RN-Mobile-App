@@ -1,41 +1,41 @@
 .background {
   flex: 1;
-  padding: 16;
+  padding: 16px;
   background-color: '#f6f6f6';
   justify-content: 'center';
 }
 
 .logo {
-  font-size: 48;
-  font-weight: 'bold';
+  font-size: 48px;
+  // font-weight: 'bold';
   color: '#6200ee';
   text-align: 'center';
-  margin-bottom: 24;
+  margin-bottom: 24px
 }
 
 .header {
-  font-size: 16;
+  font-size: 16px;
   color: '#000';
   text-align: 'center';
-  margin-bottom: 24;
+  margin-bottom: 24px
 }
 
 .textInput {
-  border-width: 1;
-  border-color: '#ccc';
-  border-radius: 4;
-  padding: 16;
-  margin-bottom: 16;
+  border-width: 1px;
+  // border-color: '#cccccc';
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
 }
 
 .forgotPassword {
   align-items: 'flex-end';
-  margin-bottom: 24;
+  margin-bottom: 24px;
 }
 
 .row {
   flex-direction: 'row';
-  margin-top: 4;
+  margin-top: 4px;
 }
 
 .label {
@@ -43,33 +43,33 @@
 }
 
 .link {
-  font-weight: 'bold';
+  // font-weight: 'bold';
   color: '#6200ee';
 }
 
 .buttonContainer {
-  padding: 16; 
-  margin-bottom: 12; 
+  padding: 16px; 
+  margin-bottom: 12px; 
 }
 
 .signInButton {
-  border-radius: 25;
+  border-radius: 25px;
   background-color: '#6200ee';
-  padding: 10;
-  padding: 12;
+  padding: 10px;
+  padding: 12px;
   align-items: 'center';
 }
 
 .signUpButton {
-  border-radius: 25;
+  border-radius: 25px;
   background-color: '#30D5C8'; // Turquoise color
-  padding: 10;
-  padding: 12;
+  padding: 10px;
+  padding: 12px;
   align-items: 'center';
 }
 
 .buttonText {
   color: 'white';
-  font-weight: 'bold';
-  font-size: 16;
+  // font-weight: 'bold';
+  font-size: 16px;
 }
