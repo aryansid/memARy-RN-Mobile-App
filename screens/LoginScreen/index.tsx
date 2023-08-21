@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import {StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Button} from "react-native";
-import {auth} from "../firebase"
+import {auth} from "../../firebase"
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from "firebase/auth";
+import styles from './styles.scss';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
@@ -95,69 +96,69 @@ const LoginScreen = () => {
 
 export default LoginScreen
 
-const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#f6f6f6',
-    justifyContent: 'center',
-  },
-  logo: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#6200ee',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  header: {
-    fontSize: 16,
-    color: '#000',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    padding: 16,
-    marginBottom: 16,
-  },
-  forgotPassword: {
-    alignItems: 'flex-end',
-    marginBottom: 24,
-  },
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  label: {
-    color: '#000',
-  },
-  link: {
-    fontWeight: 'bold',
-    color: '#6200ee',
-  },
-  buttonContainer: {
-    paddingHorizontal: 16, 
-    marginBottom: 12, 
-  }, 
-  signInButton: {
-    borderRadius: 25,
-    backgroundColor: '#6200ee',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-  },
-  signUpButton: {
-    borderRadius: 25,
-    backgroundColor: '#30D5C8', // Turquoise color
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-});
+// const styles = StyleSheet.create({
+  // background: {
+  //   flex: 1,
+  //   padding: 16,
+  //   backgroundColor: '#f6f6f6',
+  //   justifyContent: 'center',
+  // },
+  // logo: {
+  //   fontSize: 48,
+  //   fontWeight: 'bold',
+  //   color: '#6200ee',
+  //   textAlign: 'center',
+  //   marginBottom: 24,
+  // },
+  // header: {
+  //   fontSize: 16,
+  //   color: '#000',
+  //   textAlign: 'center',
+  //   marginBottom: 24,
+  // },
+  // textInput: {
+  //   borderWidth: 1,
+  //   borderColor: '#ccc',
+  //   borderRadius: 4,
+  //   padding: 16,
+  //   marginBottom: 16,
+  // },
+  // forgotPassword: {
+  //   alignItems: 'flex-end',
+  //   marginBottom: 24,
+  // },
+  // row: {
+  //   flexDirection: 'row',
+  //   marginTop: 4,
+  // },
+  // label: {
+  //   color: '#000',
+  // },
+  // link: {
+  //   fontWeight: 'bold',
+  //   color: '#6200ee',
+  // },
+  // buttonContainer: {
+  //   paddingHorizontal: 16, 
+  //   marginBottom: 12, 
+  // }, 
+  // signInButton: {
+  //   borderRadius: 25,
+  //   backgroundColor: '#6200ee',
+  //   paddingVertical: 10,
+  //   paddingHorizontal: 12,
+  //   alignItems: 'center',
+  // },
+  // signUpButton: {
+  //   borderRadius: 25,
+  //   backgroundColor: '#30D5C8', // Turquoise color
+  //   paddingVertical: 10,
+  //   paddingHorizontal: 12,
+  //   alignItems: 'center',
+  // },
+  // buttonText: {
+  //   color: 'white',
+  //   fontWeight: 'bold',
+  //   fontSize: 16,
+  // },
+// });

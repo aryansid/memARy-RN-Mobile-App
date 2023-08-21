@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, Platform, TouchableOpacity } from 'react-native';
+import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
 // import firestore from '@react-native-firebase/firestore';    
 // import storage from '@react-native-firebase/storage';
@@ -7,8 +7,9 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { collection, addDoc, getDocs, query } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage, auth } from "../firebase";
+import { db, storage, auth } from "../../firebase";
 import { encode as btoa, decode as atob } from 'base-64';
+import styles from './styles.scss'
 
 interface SelectedImage {
   uri: any,
@@ -22,41 +23,6 @@ function HomeScreen() {
     const [error, setError] = useState("");
 
     global.atob = atob;
-
-    // const handleTakePicture = () => {
-    //     const options = {
-    //         title: 'Take Picture',
-    //         storageOptions: {
-    //             skipBackup: true,
-    //             path: 'images',
-    //         },
-    //         mediaType: 'photo',
-    //         cameraType: 'back',
-    //     };
-
-    //     ImagePicker.launchCamera(options, (response) => {
-    //         if (!response.didCancel && !response.error) {
-    //             setSelectedImage({ uri: response.uri });
-    //         }
-    //     });
-    // };
-
-    // const handleUploadFromGallery = () => {
-    //     const options = {
-    //         title: 'Select Image from Gallery',
-    //         storageOptions: {
-    //             skipBackup: true,
-    //             path: 'images',
-    //         },
-    //         mediaType: 'photo',
-    //     };
-
-    //     ImagePicker.launchImageLibrary(options, (response) => {
-    //         if (!response.didCancel && !response.error) {
-    //             setSelectedImage({ uri: response.uri });
-    //         }
-    //     });
-    // };
 
     const handleTakePicture = async () => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -107,7 +73,7 @@ function HomeScreen() {
             
             // Fetch the image from the URI and create a blob
 
-            //note ideally, I don't want to use any here, so let's try to mitigate that here...
+            //note ideally, I don't want to use 'any' here, so let's try to mitigate that here...
             const blob: any = await new Promise((resolve, reject) => {
               const xhr = new XMLHttpRequest();
               xhr.onload = function () {
@@ -147,7 +113,6 @@ function HomeScreen() {
           }
         }
       };
-      
 
     const handleSignOut = () => {
         auth.signOut().then(() => {
@@ -156,7 +121,6 @@ function HomeScreen() {
             console.error("Sign out error", error);
         });
     };
-    
        
     if (loading) {
         return (
@@ -183,7 +147,6 @@ function HomeScreen() {
                 onChangeText={setDescription}
                 style={styles.textInput}
             />
-
 
             <View style={styles.actionButtons}>
                 <TouchableOpacity style={styles.customButton} onPress={handleTakePicture}>
@@ -218,75 +181,75 @@ function HomeScreen() {
     );
 }
 
-const styles = StyleSheet.create({
-    background: {
-      flex: 1,
-      padding: 16,
-      backgroundColor: '#f6f6f6',
-    },
-    /*note from Joy: I really want to use Sass here */
-    centered: {
-      flex: 1,
-    }, 
-    gridItem: { 
-      flex: 1,
-    },
-    image: {
-      flex: 1,
-    },
+// const styles = StyleSheet.create({
+//     background: {
+//       flex: 1,
+//       padding: 16,
+//       backgroundColor: '#f6f6f6',
+//     },
+//     /*note from Joy: I really want to use Sass here */
+//     centered: {
+//       flex: 1,
+//     }, 
+//     gridItem: { 
+//       flex: 1,
+//     },
+//     image: {
+//       flex: 1,
+//     },
 
-    logo: {
-      fontSize: 36,
-      fontWeight: 'bold',
-      color: '#6200ee',
-      textAlign: 'center',
-      marginBottom: 16,
-    },
-    header: {
-      fontSize: 16,
-      color: '#000',
-      textAlign: 'center',
-      marginBottom: 16,
-    },
-    textInput: {
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 4,
-      padding: 16,
-      marginBottom: 16,
-    },
-    buttonContainer: {
-      marginBottom: 12,
-      alignItems: 'center',
-    },
-    customButton: {
-      borderRadius: 25,
-      backgroundColor: '#6200ee',
-      paddingVertical: 10,
-      paddingHorizontal: 12,
-      width: 200,
-      alignItems: 'center',
-      marginBottom: 16, // #30D5C8
-    },
-    buttonText: {
-      color: 'white',
-      fontWeight: 'bold',
-      fontSize: 16,
-    },
-    previewImage: {
-      width: 200,
-      height: 200,
-      alignSelf: 'center',
-      marginBottom: 24,
-    },
-    actionButtons: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      marginBottom: 16,
-    },
-    signOutContainer: {
-        backgroundColor: '#30D5C8'
-    }
-  });
+//     logo: {
+//       fontSize: 36,
+//       fontWeight: 'bold',
+//       color: '#6200ee',
+//       textAlign: 'center',
+//       marginBottom: 16,
+//     },
+//     header: {
+//       fontSize: 16,
+//       color: '#000',
+//       textAlign: 'center',
+//       marginBottom: 16,
+//     },
+//     textInput: {
+//       borderWidth: 1,
+//       borderColor: '#ccc',
+//       borderRadius: 4,
+//       padding: 16,
+//       marginBottom: 16,
+//     },
+//     buttonContainer: {
+//       marginBottom: 12,
+//       alignItems: 'center',
+//     },
+//     customButton: {
+//       borderRadius: 25,
+//       backgroundColor: '#6200ee',
+//       paddingVertical: 10,
+//       paddingHorizontal: 12,
+//       width: 200,
+//       alignItems: 'center',
+//       marginBottom: 16, // #30D5C8
+//     },
+//     buttonText: {
+//       color: 'white',
+//       fontWeight: 'bold',
+//       fontSize: 16,
+//     },
+//     previewImage: {
+//       width: 200,
+//       height: 200,
+//       alignSelf: 'center',
+//       marginBottom: 24,
+//     },
+//     actionButtons: {
+//       flexDirection: 'row',
+//       justifyContent: 'space-around',
+//       marginBottom: 16,
+//     },
+//     signOutContainer: {
+//         backgroundColor: '#30D5C8'
+//     }
+//   });
 
 export default HomeScreen;

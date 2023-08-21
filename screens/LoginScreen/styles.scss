@@ -1,0 +1,75 @@
+.background {
+  flex: 1;
+  padding: 16;
+  background-color: '#f6f6f6';
+  justify-content: 'center';
+}
+
+.logo {
+  font-size: 48;
+  font-weight: 'bold';
+  color: '#6200ee';
+  text-align: 'center';
+  margin-bottom: 24;
+}
+
+.header {
+  font-size: 16;
+  color: '#000';
+  text-align: 'center';
+  margin-bottom: 24;
+}
+
+.textInput {
+  border-width: 1;
+  border-color: '#ccc';
+  border-radius: 4;
+  padding: 16;
+  margin-bottom: 16;
+}
+
+.forgotPassword {
+  align-items: 'flex-end';
+  margin-bottom: 24;
+}
+
+.row {
+  flex-direction: 'row';
+  margin-top: 4;
+}
+
+.label {
+  color: '#000';
+}
+
+.link {
+  font-weight: 'bold';
+  color: '#6200ee';
+}
+
+.buttonContainer {
+  padding: 16; 
+  margin-bottom: 12; 
+}
+
+.signInButton {
+  border-radius: 25;
+  background-color: '#6200ee';
+  padding: 10;
+  padding: 12;
+  align-items: 'center';
+}
+
+.signUpButton {
+  border-radius: 25;
+  background-color: '#30D5C8'; // Turquoise color
+  padding: 10;
+  padding: 12;
+  align-items: 'center';
+}
+
+.buttonText {
+  color: 'white';
+  font-weight: 'bold';
+  font-size: 16;
+}
