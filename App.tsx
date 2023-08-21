@@ -29,9 +29,7 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        setUser(authUser);
-      }
+      setUser(authUser);
       setIsAuthenticating(false);
     });
 
