@@ -10,12 +10,16 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, auth } from "../firebase";
 import { encode as btoa, decode as atob } from 'base-64';
 
+interface SelectedImage {
+  uri: any,
+}
+
 function HomeScreen() {
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState<SelectedImage>();
     const [description, setDescription] = useState('');
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState();
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
 
     global.atob = atob;
 
@@ -68,7 +72,7 @@ function HomeScreen() {
           quality: 1,
         });
       
-        if (!result.cancelled && !result.canceled) {
+        if (!result.canceled) {
           const asset = result.assets[0];
           setSelectedImage({ uri: asset.uri });
         }
@@ -88,7 +92,7 @@ function HomeScreen() {
           quality: 1,
         });
       
-        if (!result.cancelled && !result.canceled) {
+        if (!result.canceled) {
           const asset = result.assets[0];
           setSelectedImage({ uri: asset.uri });
         }
@@ -102,7 +106,9 @@ function HomeScreen() {
             const filename = `${Date.now()}.jpg`;
             
             // Fetch the image from the URI and create a blob
-            const blob = await new Promise((resolve, reject) => {
+
+            //note ideally, I don't want to use any here, so let's try to mitigate that here...
+            const blob: any = await new Promise((resolve, reject) => {
               const xhr = new XMLHttpRequest();
               xhr.onload = function () {
                 resolve(xhr.response);
@@ -130,7 +136,7 @@ function HomeScreen() {
               description: description,
             });
       
-            setSelectedImage(null);
+            setSelectedImage(undefined);
             setDescription('');
             setLoading(false);
             Alert.alert("Success", "Image has been successfully uploaded!", [{ text: "OK" }]);
@@ -161,7 +167,7 @@ function HomeScreen() {
     }
 
     if (error) {
-        Alert.alert("Error", error, [{ text: "OK", onPress: () => setError(null) }]);
+        Alert.alert("Error", error, [{ text: "OK", onPress: () => setError("") }]);
     }
 
     return (
@@ -218,6 +224,17 @@ const styles = StyleSheet.create({
       padding: 16,
       backgroundColor: '#f6f6f6',
     },
+    /*note from Joy: I really want to use Sass here */
+    centered: {
+      flex: 1,
+    }, 
+    gridItem: { 
+      flex: 1,
+    },
+    image: {
+      flex: 1,
+    },
+
     logo: {
       fontSize: 36,
       fontWeight: 'bold',

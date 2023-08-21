@@ -6,6 +6,8 @@ import LoginScreen from './screens/LoginScreen'
 import HomeScreen from './screens/HomeScreen';
 import {auth} from "./firebase"
 import {useEffect, useState} from 'react';
+import { User } from 'firebase/auth';
+import React from 'react';
 
 const Stack = createNativeStackNavigator(); 
 
@@ -22,11 +24,13 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(authUser => {
-      setUser(authUser);
+      if (authUser) {
+        setUser(authUser);
+      }
       setIsAuthenticating(false);
     });
 
