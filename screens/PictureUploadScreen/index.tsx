@@ -134,8 +134,6 @@ function PictureUploadScreen() {
         Alert.alert("Error", error, [{ text: "OK", onPress: () => setError("") }]);
     }
 
-    console.log(styles);
-
     return (
         <View style={styles.background}>
             <Text style={styles.logo}>Capture your face</Text>
