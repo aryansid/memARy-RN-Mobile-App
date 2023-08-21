@@ -8,9 +8,9 @@ export default function HomeScreen() {
   return (
     <Tab.Navigator 
       initialRouteName="Picture Upload" 
-      screenOptions={ { tabBarShowLabel : false, tabBarItemStyle: { width: 0 } } }
+      screenOptions={() => ({tabBarShowLabel: false})}
     >
-      <Tab.Screen name="Picture Upload" component={PictureUploadScreen}/>
+      <Tab.Screen options={{}} name="Picture Upload" component={PictureUploadScreen}/>
       <Tab.Screen name="Recog Screen" component={RecogScreen}/>
     </Tab.Navigator>
   );
