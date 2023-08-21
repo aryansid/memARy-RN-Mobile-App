@@ -1,6 +1,5 @@
-import { useNavigation } from '@react-navigation/core'
-import React, {useEffect, useState} from "react";
-import {KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Button} from "react-native";
+import React, {useState} from "react";
+import {StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Button} from "react-native";
 import {auth} from "../firebase"
 import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from "firebase/auth";
 

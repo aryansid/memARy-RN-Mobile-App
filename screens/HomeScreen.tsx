@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, Platform, TouchableOpacity } from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
 // import firestore from '@react-native-firebase/firestore';    
