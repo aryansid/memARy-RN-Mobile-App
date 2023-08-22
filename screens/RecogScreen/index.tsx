@@ -12,48 +12,72 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as theme from '../../theme';
 
+
+const SPLASH_IMAGE_URL = 'https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=800&q=80';
+
 const { width } = Dimensions.get('window');
-const mocks = [
+const mocks: RelatedPersonItem[] = [
   {
     id: 1,
-    user: {
+    relatedPerson: {
       name: 'Joy',
       relationship: 'Son',
     },
-    images: [
-      'https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=800&q=80'
-    ]
+    image: "./joy.jpg"
   },
   {
     id: 2,
-    user: {
+    relatedPerson: {
       name: 'Julian',
       relationship: 'Niece',
     },
-    images: [
-      'https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=800&q=80'
-    ]
+    image: './julian.jpg'
   },
   {
     id: 3,
-    user: {
+    relatedPerson: {
       name: 'Aryan',
       relationship: 'Grandson',
     },
-    images: [
-      'https://images.unsplash.com/photo-1507501336603-6e31db2be093?auto=format&fit=crop&w=800&q=80'
-    ]
+    image: './aryan.jpg'
   },
-
 ]
+
+type RelatedPersonItem = {
+  id: number,
+  relatedPerson: {
+    name: string,
+    relationship: string,
+  },
+  image: string,
+};
 
 const RecogScreen: React.FC = () => {
 
-  const renderCard = ({ item }) => {
+  const renderCard = ({ item }: {item: RelatedPersonItem}) => {
+      
+      //ideally this switch case is dumb, ik, but the whole point is 
+      //we want to maybe have some default image??
+      let source;
+      switch(item.image) {
+        case "./aryan.jpg":
+          source = require("./aryan.jpg");
+          break;
+        case "./joy.jpg":
+          source = require("./joy.jpg");
+          break;
+        case "./julian.jpg":
+          source = require("./julian.jpg");
+          break;
+        default:
+          source = {uri: SPLASH_IMAGE_URL};
+      }
+           
       return (
           <View style={styles.card}>
               <ImageBackground
-                  source={{ uri: item.images[0] }}
+                  // source={{ uri: item.image }}
+                  source={source}
                   style={styles.image}
               >
               </ImageBackground>
