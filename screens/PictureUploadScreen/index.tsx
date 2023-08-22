@@ -175,9 +175,9 @@ function PictureUploadScreen() {
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
             />
-            {/* <View style={styles.signOutContainer}>
+            <View style={styles.signOutContainer}>
                 <Button title="Sign Out" onPress={handleSignOut} />
-            </View> */}
+            </View>
         </View>
     );
 }
