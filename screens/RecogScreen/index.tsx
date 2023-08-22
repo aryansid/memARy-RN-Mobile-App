@@ -72,7 +72,7 @@ const RecogScreen: React.FC = () => {
         default:
           source = {uri: SPLASH_IMAGE_URL};
       }
-           
+
       return (
           <View style={styles.card}>
               <ImageBackground
@@ -80,6 +80,9 @@ const RecogScreen: React.FC = () => {
                   source={source}
                   style={styles.image}
               >
+                <View style={styles.nameBackground}>
+                  <Text>{`${item.relatedPerson.name}, your ${item.relatedPerson.relationship}`}</Text>
+                </View>
               </ImageBackground>
           </View>
       );
@@ -97,16 +100,24 @@ const RecogScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   list: {
-      padding: theme.sizes.padding,
+    padding: theme.sizes.padding,
   },
   card: {
-      marginBottom: theme.sizes.margin,
-      overflow: 'hidden',
-      borderRadius: theme.sizes.radius,
+    marginBottom: theme.sizes.margin,
+    overflow: 'hidden',
+    borderRadius: theme.sizes.radius,
   },
   image: {
-      width: width - (theme.sizes.padding * 2),
-      height: 250,
+    width: width - (theme.sizes.padding * 2),
+    height: 250,
+  },
+  nameBackground: {
+    alignSelf: 'flex-end',
+    backgroundColor: theme.colors.gray,
+    top: 220,
+    right: 5,  
+    padding: 4,
+    borderRadius: theme.sizes.radius,
   },
   
   // TODO Aryan: Add white card design later
