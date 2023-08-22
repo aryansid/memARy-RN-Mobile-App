@@ -1,11 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen'
-import HomeScreen from './screens/HomeScreen';
+import PictureUploadScreen from './screens/PictureUploadScreen';
 import {auth} from "./firebase"
 import {useEffect, useState} from 'react';
+import { User } from 'firebase/auth';
+import React from 'react';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createNativeStackNavigator(); 
 
@@ -22,7 +25,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(authUser => {
@@ -32,6 +35,8 @@ export default function App() {
 
     return unsubscribe;
   }, []);
+
+  const Tab = createMaterialTopTabNavigator();
 
   if (isAuthenticating) {
     return (
@@ -46,12 +51,14 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {user ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen options={{headerShown: false}} name="Home" component={HomeScreen} />
         ) : (
           <Stack.Screen options={{headerShown: false}} name="Login" component={LoginScreen} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
+
+
   );
 }
 

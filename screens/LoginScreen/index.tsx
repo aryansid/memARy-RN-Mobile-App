@@ -1,8 +1,8 @@
-import { useNavigation } from '@react-navigation/core'
-import React, {useEffect, useState} from "react";
-import {KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Button} from "react-native";
-import {auth} from "../firebase"
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+import React, {useState} from "react";
+import {StyleSheet, Text, TextInput, TouchableOpacity, Image, View, Button} from "react-native";
+import {auth} from "../../firebase"
+import {createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from "firebase/auth";
+// import styles from './styles.scss';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
@@ -35,7 +35,7 @@ const LoginScreen = () => {
   }
 
   const handleLogin = () => {
-    signInWithEmailAndPassword(email, password)
+    signInWithEmailAndPassword(auth, email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Logged in with:', user.email);

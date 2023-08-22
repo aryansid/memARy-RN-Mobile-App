@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, Platform, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
 // import firestore from '@react-native-firebase/firestore';    
 // import storage from '@react-native-firebase/storage';
@@ -7,52 +7,22 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { collection, addDoc, getDocs, query } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage, auth } from "../firebase";
+import { db, storage, auth } from "../../firebase";
 import { encode as btoa, decode as atob } from 'base-64';
+// import styles from './styles.scss'
 
-function HomeScreen() {
-    const [selectedImage, setSelectedImage] = useState(null);
+interface SelectedImage {
+  uri: any,
+}
+
+function PictureUploadScreen() {
+    const [selectedImage, setSelectedImage] = useState<SelectedImage>();
     const [description, setDescription] = useState('');
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState();
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState("");
 
     global.atob = atob;
-
-    // const handleTakePicture = () => {
-    //     const options = {
-    //         title: 'Take Picture',
-    //         storageOptions: {
-    //             skipBackup: true,
-    //             path: 'images',
-    //         },
-    //         mediaType: 'photo',
-    //         cameraType: 'back',
-    //     };
-
-    //     ImagePicker.launchCamera(options, (response) => {
-    //         if (!response.didCancel && !response.error) {
-    //             setSelectedImage({ uri: response.uri });
-    //         }
-    //     });
-    // };
-
-    // const handleUploadFromGallery = () => {
-    //     const options = {
-    //         title: 'Select Image from Gallery',
-    //         storageOptions: {
-    //             skipBackup: true,
-    //             path: 'images',
-    //         },
-    //         mediaType: 'photo',
-    //     };
-
-    //     ImagePicker.launchImageLibrary(options, (response) => {
-    //         if (!response.didCancel && !response.error) {
-    //             setSelectedImage({ uri: response.uri });
-    //         }
-    //     });
-    // };
 
     const handleTakePicture = async () => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -68,7 +38,7 @@ function HomeScreen() {
           quality: 1,
         });
       
-        if (!result.cancelled && !result.canceled) {
+        if (!result.canceled) {
           const asset = result.assets[0];
           setSelectedImage({ uri: asset.uri });
         }
@@ -88,7 +58,7 @@ function HomeScreen() {
           quality: 1,
         });
       
-        if (!result.cancelled && !result.canceled) {
+        if (!result.canceled) {
           const asset = result.assets[0];
           setSelectedImage({ uri: asset.uri });
         }
@@ -102,7 +72,9 @@ function HomeScreen() {
             const filename = `${Date.now()}.jpg`;
             
             // Fetch the image from the URI and create a blob
-            const blob = await new Promise((resolve, reject) => {
+
+            //note ideally, I don't want to use 'any' here, so let's try to mitigate that here...
+            const blob: any = await new Promise((resolve, reject) => {
               const xhr = new XMLHttpRequest();
               xhr.onload = function () {
                 resolve(xhr.response);
@@ -130,7 +102,7 @@ function HomeScreen() {
               description: description,
             });
       
-            setSelectedImage(null);
+            setSelectedImage(undefined);
             setDescription('');
             setLoading(false);
             Alert.alert("Success", "Image has been successfully uploaded!", [{ text: "OK" }]);
@@ -141,7 +113,6 @@ function HomeScreen() {
           }
         }
       };
-      
 
     const handleSignOut = () => {
         auth.signOut().then(() => {
@@ -150,7 +121,6 @@ function HomeScreen() {
             console.error("Sign out error", error);
         });
     };
-    
        
     if (loading) {
         return (
@@ -161,7 +131,7 @@ function HomeScreen() {
     }
 
     if (error) {
-        Alert.alert("Error", error, [{ text: "OK", onPress: () => setError(null) }]);
+        Alert.alert("Error", error, [{ text: "OK", onPress: () => setError("") }]);
     }
 
     return (
@@ -178,7 +148,6 @@ function HomeScreen() {
                 style={styles.textInput}
             />
 
-
             <View style={styles.actionButtons}>
                 <TouchableOpacity style={styles.customButton} onPress={handleTakePicture}>
                 <Text style={styles.buttonText}>Take Picture</Text>
@@ -189,7 +158,8 @@ function HomeScreen() {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.buttonContainer}>
+            <View 
+                style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.customButton} onPress={handleUploadToFirebase}>
                 <Text style={styles.buttonText}>Upload Photo</Text>
                 </TouchableOpacity>
@@ -218,6 +188,17 @@ const styles = StyleSheet.create({
       padding: 16,
       backgroundColor: '#f6f6f6',
     },
+    /*note from Joy: I really want to use Sass here */
+    centered: {
+      flex: 1,
+    }, 
+    gridItem: { 
+      flex: 1,
+    },
+    image: {
+      flex: 1,
+    },
+
     logo: {
       fontSize: 36,
       fontWeight: 'bold',
@@ -272,4 +253,4 @@ const styles = StyleSheet.create({
     }
   });
 
-export default HomeScreen;
+export default PictureUploadScreen;
