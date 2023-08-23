@@ -1,2 +1,2 @@
 # memARy
-AR glasses for Alzheimer's patients
+AR glasses for early to mild stage Dementia and Prosopagnosia patients
