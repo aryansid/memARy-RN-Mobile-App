@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, View, StyleSheet, TextInput, Image, Text, FlatList, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 // import ImagePicker from 'react-native-image-picker';
 // import firestore from '@react-native-firebase/firestore';    
@@ -16,6 +16,7 @@ interface SelectedImage {
 }
 
 function PictureUploadScreen() {
+    const [userID, setUserID] = useState(null);
     const [selectedImage, setSelectedImage] = useState<SelectedImage>();
     const [description, setDescription] = useState('');
     const [images, setImages] = useState();
@@ -23,6 +24,14 @@ function PictureUploadScreen() {
     const [error, setError] = useState("");
 
     global.atob = atob;
+
+    useEffect(() => {
+      const currentUser = auth.currentUser;
+      if(currentUser) {
+          setUserID(currentUser.uid);
+      }
+    }, []);
+  
 
     const handleTakePicture = async () => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -88,7 +97,7 @@ function PictureUploadScreen() {
             });
       
             // Create a storage reference and upload the blob
-            const imageRef = ref(storage, `images/${filename}`);
+            const imageRef = ref(storage, `users/${userID}/images/${filename}`);
             const uploadTaskSnapshot = await uploadBytes(imageRef, blob);
       
             // Close the blob and free up resources
@@ -100,7 +109,8 @@ function PictureUploadScreen() {
             await addDoc(collection(db, 'images'), {
               imageUrl: url,
               description: description,
-            });
+              userID: userID,
+          });          
       
             setSelectedImage(undefined);
             setDescription('');
