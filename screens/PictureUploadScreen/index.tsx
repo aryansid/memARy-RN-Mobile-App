@@ -26,10 +26,12 @@ function PictureUploadScreen() {
     global.atob = atob;
 
     useEffect(() => {
-      const currentUser = auth.currentUser;
-      if(currentUser) {
-          setUserID(currentUser.uid);
-      }
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          setUserID(user.uid);
+        }
+      });
+      return unsubscribe;
     }, []);
   
 
@@ -81,8 +83,6 @@ function PictureUploadScreen() {
             const filename = `${Date.now()}.jpg`;
             
             // Fetch the image from the URI and create a blob
-
-            //note ideally, I don't want to use 'any' here, so let's try to mitigate that here...
             const blob: any = await new Promise((resolve, reject) => {
               const xhr = new XMLHttpRequest();
               xhr.onload = function () {
@@ -105,7 +105,7 @@ function PictureUploadScreen() {
       
             // Get the download URL and update Firestore
             const url = await getDownloadURL(imageRef);
-      
+
             await addDoc(collection(db, 'images'), {
               imageUrl: url,
               description: description,
@@ -120,6 +120,7 @@ function PictureUploadScreen() {
             console.error(err);
             setError("Failed to upload data. Please try again.");
             setLoading(false);
+            Alert.alert("Error", "Failed to upload data. Please try again.", [{ text: "OK", onPress: () => setError("") }]);
           }
         }
       };
